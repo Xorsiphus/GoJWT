@@ -54,7 +54,7 @@ func AddHash(userId string, hash string) {
 	if err != nil && err != mongo.ErrNoDocuments {
 		log.Fatal(err)
 	}
-	fmt.Printf("replaced user %v\n", replacedDocument)
+	fmt.Printf("replaced user with %v\n", replacement)
 }
 
 func CheckHash(userId string, refreshToken []byte) bool {

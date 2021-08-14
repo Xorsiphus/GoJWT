@@ -10,7 +10,7 @@ import (
 func GenerateJWT(userId string) (string, error, time.Time) {
 	expirationTime := time.Now().Add(time.Minute * 5)
 
-	// Генерация Claims для Tokens
+	// Генерация Claims для токена
 	claims := &Configuration.Claims{
 		UserId: userId,
 		StandardClaims: jwt.StandardClaims{
@@ -18,7 +18,6 @@ func GenerateJWT(userId string) (string, error, time.Time) {
 		},
 	}
 
-	// Генерация access Tokens (SHA512 alg)
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
 	accessTokenStr, err := accessToken.SignedString(Configuration.JwtKey)
 	return accessTokenStr, err, expirationTime

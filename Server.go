@@ -15,5 +15,5 @@ func main() {
 	http.HandleFunc("/home", Handlers.Home)
 	http.HandleFunc("/clear", Handlers.Clear)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":5010", nil))
 }
