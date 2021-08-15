@@ -11,6 +11,7 @@ var UserColumn = "user_id"
 var HashColumn = "hash"
 var AccessTokenCookieName = "accessToken"
 var RefreshTokenCookieName = "refreshToken"
+var Addr = ":5010"
 
 type Claims struct {
 	UserId string `json:"userid"`

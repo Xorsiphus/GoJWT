@@ -21,3 +21,8 @@
 
     Example: `http://193.123.36.213:5010/clear` 
 
+## Server deployment:
+
+### `go install`
+### `go run .`
+

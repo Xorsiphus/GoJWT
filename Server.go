@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoJWT/Configuration"
 	"GoJWT/Handlers"
 	"GoJWT/MongoDb"
 	"log"
@@ -15,5 +16,7 @@ func main() {
 	http.HandleFunc("/home", Handlers.Home)
 	http.HandleFunc("/clear", Handlers.Clear)
 
-	log.Fatal(http.ListenAndServe(":5010", nil))
+	log.Printf("Listening %v", Configuration.Addr)
+
+	defer log.Fatal(http.ListenAndServe(Configuration.Addr, nil))
 }
