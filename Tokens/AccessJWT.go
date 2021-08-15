@@ -2,7 +2,7 @@ package Tokens
 
 import (
 	"GoJWT/Configuration"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"time"
 )
 

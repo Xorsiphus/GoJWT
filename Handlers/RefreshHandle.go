@@ -5,7 +5,7 @@ import (
 	"GoJWT/MongoDb"
 	"GoJWT/Tokens"
 	"encoding/base64"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"net/http"
 	"strings"
 	"time"
