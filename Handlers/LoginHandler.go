@@ -69,5 +69,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Сохранение хеша refresh токена
-	MongoDb.AddHash(userId, string(refreshTokenHash))
+	if MongoDb.AddHash(userId, string(refreshTokenHash)) {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Database error!"))
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(userId + " has been authorized"))
 }

@@ -36,10 +36,10 @@ func Connect() {
 	userHashesCollection = hashesDatabase.Collection("user_hashes")
 }
 
-func AddHash(userId string, hash string) {
+func AddHash(userId string, hash string) bool {
 	if userHashesCollection == nil {
 		log.Fatal("Db error!")
-		return
+		return false
 	}
 
 	opts := options.FindOneAndReplace().SetUpsert(true)
@@ -54,8 +54,11 @@ func AddHash(userId string, hash string) {
 
 	if err != nil && err != mongo.ErrNoDocuments {
 		log.Fatal(err)
+		return false
 	}
 	fmt.Printf("replaced user with %v\n", replacement)
+
+	return true
 }
 
 func CheckHash(userId string, refreshToken []byte) bool {
