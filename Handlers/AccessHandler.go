@@ -19,11 +19,9 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == http.ErrNoCookie {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Unauthorized!"))
 			return
 		}
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Bad request!"))
 		return
 	}
 
@@ -51,7 +49,6 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	if !tkn.Valid {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Unauthorized!"))
 		return
 	}
 

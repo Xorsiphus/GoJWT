@@ -1,8 +1,9 @@
 package Configuration
 
 import (
-	"github.com/golang-jwt/jwt"
 	"os"
+
+	"github.com/golang-jwt/jwt"
 )
 
 // var JwtKey = []byte("key")
@@ -11,6 +12,7 @@ var UserColumn = "user_id"
 var HashColumn = "hash"
 var AccessTokenCookieName = "accessToken"
 var RefreshTokenCookieName = "refreshToken"
+var ViewsTemplate = "Views/"
 var Addr = ":5010"
 
 type Claims struct {

@@ -5,6 +5,8 @@ import (
 	"GoJWT/MongoDb"
 	"GoJWT/Tokens"
 	"encoding/base64"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -14,8 +16,23 @@ import (
 
 func Refresh(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodPost {
+	if r.Method != http.MethodPost && r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write([]byte("Only 'POST' and 'GET' methods is available!"))
+		return
+	}
+
+	if r.Method == http.MethodGet {
+		body, err := ioutil.ReadFile(Configuration.ViewsTemplate + "refresh.html")
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, string(body))
+
 		return
 	}
 

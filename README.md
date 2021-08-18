@@ -2,27 +2,28 @@
 
 ## Api:
 
-* HttpGet: `http://<address>:<port>/login?userId=<value>` (Получение пары токенов 'Access' и 'Refresh')
+- HttpGet: `http://<address>:<port>/login?userId=<value>` (Получение пары токенов 'Access' и 'Refresh')
 
-    Example: `http://193.123.36.213:5010/login?userId=user1`
+  Example: `http://193.123.36.213:5010/login?userId=user1`
 
+- HttpPost: `http://<address>:<port>/refresh` (Обновление токенов)
 
-* HttpPost: `http://<address>:<port>/refresh` (Обновление токенов)
+  Example: `http://193.123.36.213:5010/refresh`
 
-  Example: `http://193.123.36.213:5010/refresh` 
+- (HttpGet: `http://<address>:<port>/refresh` (Получение POST формы для выполнения предыдущего запроса в браузере)
 
+  Example: `http://193.123.36.213:5010/refresh`
 
-* HttpGet: `http://<address>:<port>/home` (Получение данных после авторизации)
+- HttpGet: `http://<address>:<port>/home` (Получение данных после авторизации)
 
-    Example: `http://193.123.36.213:5010/home` 
+  Example: `http://193.123.36.213:5010/home`
 
+- HttpGet: `http://<address>:<port>/clear` (Сброс токенов)
 
-* HttpGet: `http://<address>:<port>/clear` (Сброс токенов)
-
-    Example: `http://193.123.36.213:5010/clear` 
+  Example: `http://193.123.36.213:5010/clear`
 
 ## Server deployment:
 
 ### `go install`
-### `go run .`
 
+### `go run .`
