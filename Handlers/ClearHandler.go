@@ -9,15 +9,16 @@ import (
 func Clear(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w,
 		&http.Cookie{
-			Name: Configuration.AccessTokenCookieName,
+			Name:    Configuration.AccessTokenCookieName,
 			Expires: time.Now().Add(-time.Minute),
 		})
 
 	http.SetCookie(w,
 		&http.Cookie{
-			Name: Configuration.RefreshTokenCookieName,
+			Name:    Configuration.RefreshTokenCookieName,
 			Expires: time.Now().Add(-time.Minute),
 		})
 
-	return
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Cookies has been cleared!"))
 }

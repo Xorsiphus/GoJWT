@@ -4,12 +4,13 @@ import (
 	"GoJWT/Configuration"
 	"context"
 	"fmt"
+	"log"
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
-	"log"
-	"time"
 )
 
 var ctx context.Context
@@ -23,7 +24,7 @@ func Connect() {
 		log.Fatal(err)
 	}
 
-	ctx, cancelFunc := context.WithTimeout(context.Background(), 5 * time.Second)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelFunc()
 
 	err = client.Connect(ctx)

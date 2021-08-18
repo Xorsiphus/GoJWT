@@ -19,7 +19,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// Получение UserId из параметров запроса
 	query, present := r.URL.Query()["userId"]
 
+	fmt.Printf("%v", query)
+
 	if !present || len(query) != 1 {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid query!"))
 		fmt.Println("Invalid query!")
 		return
 	}
