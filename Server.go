@@ -9,7 +9,11 @@ import (
 )
 
 func main() {
-	MongoDb.Connect()
+	err := MongoDb.Connect()
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
 	defer MongoDb.Disconnect()
 	http.HandleFunc("/login", Handlers.Login)
 	http.HandleFunc("/refresh", Handlers.Refresh)

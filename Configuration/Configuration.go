@@ -14,6 +14,9 @@ var AccessTokenCookieName = "accessToken"
 var RefreshTokenCookieName = "refreshToken"
 var ViewsTemplate = "Views/"
 var Addr = ":5010"
+var DbErrorString = "database error"
+var UnauthorizedString = "Unauthorized!"
+var InvalidQueryString = "Invalid query!"
 
 type Claims struct {
 	UserId string `json:"userid"`

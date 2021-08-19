@@ -70,7 +70,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 
 	if tkn != nil && !tkn.Valid {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Unauthorized!"))
+		w.Write([]byte(Configuration.UnauthorizedString))
 		return
 	}
 
@@ -101,9 +101,10 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	// Проверка аутентичности refresh токена
 	refreshTokenUserId := params[1]
 
-	if !MongoDb.CheckHash(refreshTokenUserId, refreshToken) {
+	err = MongoDb.CheckHash(refreshTokenUserId, refreshToken)
+	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Incorrect refresh token!"))
+		w.Write([]byte(err.Error()))
 		return
 	}
 
@@ -114,7 +115,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Проверка актуальности токена
+	// Проверка актуальности refresh токена
 	expirationTime, err := time.Parse(time.RFC3339, params[0])
 
 	if err != nil {
@@ -167,5 +168,13 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	MongoDb.AddHash(userId, string(refreshTokenHash))
+	err = MongoDb.AddHash(userId, string(refreshTokenHash))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Successfully updated!"))
 }

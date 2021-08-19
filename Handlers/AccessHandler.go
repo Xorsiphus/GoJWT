@@ -19,9 +19,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == http.ErrNoCookie {
 			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(err.Error()))
 			return
 		}
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
 		return
 	}
 
@@ -49,9 +51,10 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	if !tkn.Valid {
 		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte(Configuration.UnauthorizedString))
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(claims.UserId))
+	w.Write([]byte("Authorized Username: " + claims.UserId))
 }

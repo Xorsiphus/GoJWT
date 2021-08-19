@@ -3,6 +3,7 @@ package MongoDb
 import (
 	"GoJWT/Configuration"
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -18,28 +19,32 @@ var client *mongo.Client
 var hashesDatabase *mongo.Database
 var userHashesCollection *mongo.Collection
 
-func Connect() {
+func Connect() error {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 
-	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 5 * time.Second)
 	defer cancelFunc()
 
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 
 	hashesDatabase = client.Database("user_hashes")
 	userHashesCollection = hashesDatabase.Collection("user_hashes")
+
+	return nil
 }
 
-func AddHash(userId string, hash string) bool {
+func AddHash(userId string, hash string) error {
 	if userHashesCollection == nil {
-		log.Fatal("Db error!")
-		return false
+		log.Println(Configuration.DbErrorString)
+		return errors.New(Configuration.DbErrorString)
 	}
 
 	opts := options.FindOneAndReplace().SetUpsert(true)
@@ -53,18 +58,18 @@ func AddHash(userId string, hash string) bool {
 	err := userHashesCollection.FindOneAndReplace(context.TODO(), filter, replacement, opts).Decode(&replacedDocument)
 
 	if err != nil && err != mongo.ErrNoDocuments {
-		log.Fatal(err)
-		return false
+		log.Println(err)
+		return err
 	}
 	fmt.Printf("replaced user with %v\n", replacement)
 
-	return true
+	return nil
 }
 
-func CheckHash(userId string, refreshToken []byte) bool {
+func CheckHash(userId string, refreshToken []byte) error {
 	if userHashesCollection == nil {
-		log.Fatal("Db error!")
-		return false
+		log.Println(Configuration.DbErrorString)
+		return errors.New(Configuration.DbErrorString)
 	}
 
 	opts := options.FindOne()
@@ -82,11 +87,12 @@ func CheckHash(userId string, refreshToken []byte) bool {
 
 	hash := result[Configuration.HashColumn].(string)
 
-	if bcrypt.CompareHashAndPassword([]byte(hash), refreshToken) != nil {
-		return false
+	err = bcrypt.CompareHashAndPassword([]byte(hash), refreshToken)
+	if err != nil {
+		return err
 	}
 
-	return true
+	return nil
 }
 
 func Disconnect() {

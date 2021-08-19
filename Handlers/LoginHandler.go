@@ -23,8 +23,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if !present || len(query) != 1 {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Invalid query!"))
-		fmt.Println("Invalid query!")
+		w.Write([]byte(Configuration.InvalidQueryString))
+		fmt.Println(Configuration.InvalidQueryString)
 		return
 	}
 
@@ -69,9 +69,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Сохранение хеша refresh токена
-	if MongoDb.AddHash(userId, string(refreshTokenHash)) {
+	err = MongoDb.AddHash(userId, string(refreshTokenHash))
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Database error!"))
+		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)
