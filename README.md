@@ -1,6 +1,6 @@
 # GoJWT
 
-## Api:
+## Api(deprecated):
 
 - HttpGet: `http://<address>:<port>/login?userId=<value>` (Получение пары токенов 'Access' и 'Refresh')
 
